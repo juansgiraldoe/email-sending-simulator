@@ -9,12 +9,46 @@ document.addEventListener('DOMContentLoaded', function () {
   const inputMail = document.querySelector('#email');
   const inputAsunto = document.querySelector('#asunto');
   const inputMensaje = document.querySelector('#mensaje');
+  const formulario = document.querySelector('#formulario');
   const btnSubmit = document.querySelector('#formulario button[type="submit"]');
+  const btnReset = document.querySelector('#formulario button[type="reset"]');
+  const spinner = document.querySelector('#spinner')
 
   //Asignacion de eventos.
   inputMail.addEventListener('input', validar);
   inputAsunto.addEventListener('input', validar);
   inputMensaje.addEventListener('input', validar);
+  btnReset.addEventListener('click', function (e) {
+    e.preventDefault();
+    resetFormulario();
+    
+  });
+
+  formulario.addEventListener('submit', enviarEmail);
+
+  //
+  function enviarEmail(e) {
+    e.preventDefault();
+    spinner.classList.add('flex');
+    spinner.classList.remove('hidden');
+
+    setTimeout(() => {
+      // Reinnicio del spinner
+      spinner.classList.remove('flex');
+      spinner.classList.add('hidden');
+
+      // Reinicio de campos del formulario
+      resetFormulario();
+      //Mostramos la alerta del envio exitoso del formulario.
+      const alertaExito = document.createElement('P');
+      alertaExito.classList.add('bg-green-500', 'text-white', 'p-2', 'text-center', 'rounded-lg', 'mt-10', 'font-bold', 'text-sm', 'uppercase');
+      alertaExito.textContent = 'Mensaje enviado correctamente.'
+      formulario.appendChild(alertaExito)
+      setTimeout(() => {
+        alertaExito.remove();
+      }, 2000);
+    }, 3000);
+  }
   
   //Validacion del evento.
   function validar(e) {
@@ -39,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     limpiarAlerta(itemSeleccionado);
 
-    //Asignar valores al objeto email.
+    //Asignar valores al objeto validador.
     validador[e.target.name] = e.target.value.trim().toLowerCase();
     
     //Comprobar validaciones.
@@ -53,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
     const error = document.createElement('P')
     error.textContent = mensaje;
-    error.classList.add('bg-red-600', 'text-white', 'p-2', 'text-center', 'rounded-lg');
+    error.classList.add('bg-red-600', 'text-white', 'p-2', 'text-center', 'rounded-lg', 'font-bold');
     
     ref.appendChild(error)
   }
@@ -82,5 +116,16 @@ document.addEventListener('DOMContentLoaded', function () {
     } 
     btnSubmit.classList.remove('opacity-50');
     btnSubmit.disabled = false;
+  }
+
+  function resetFormulario() {
+    //Reiniciar el objeto.
+    validador.email = '';
+    validador.asunto = '';
+    validador.mensaje = '';
+    
+    formulario.reset();
+  
+    comprobarValidaciones();
   }
 });

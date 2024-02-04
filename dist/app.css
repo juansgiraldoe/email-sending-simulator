@@ -514,7 +514,7 @@ video {
 }
 
 .mt-10 {
-  margin-top: 2.5rem;
+  margin-top: 1.5rem;
 }
 
 .flex {
@@ -534,7 +534,7 @@ video {
 }
 
 .min-h-screen {
-  min-height: 100vh;
+  min-height: 90vh;
 }
 
 .w-6 {
